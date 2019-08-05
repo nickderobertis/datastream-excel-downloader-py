@@ -5,7 +5,7 @@
 PACKAGE_NAME = 'dstream_excel'
 
 # Package version in the format (major, minor, release)
-PACKAGE_VERSION_TUPLE = (0, 2, 2)
+PACKAGE_VERSION_TUPLE = (0, 2, 3)
 
 # Short description of the package
 PACKAGE_SHORT_DESCRIPTION = 'Automate data collection from Thompson Reuters Datastream ' \
@@ -54,7 +54,8 @@ PACKAGE_INSTALL_REQUIRES = [
     'pypiwin32',
     'pandas',
     'numpy',
-    'openpyxl'
+    'openpyxl',
+    'xlrd'
 ]
 
 # Sphinx executes all the import statements as it generates the documentation. To avoid having to install all

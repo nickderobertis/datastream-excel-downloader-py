@@ -13,6 +13,11 @@ Install this package via::
 You must also be running Windows, have Excel installed, have Eikon installed,
 and have the Eikon plugin for Excel installed.
 
+There is one setting in the Excel plugin that makes or breaks this
+automation. Go to the Thompson Reuters Datatream tab, click Options.
+In Calculation Options, make sure "Suppress Auto Calculation on Open"
+is unchecked.
+
 Overview
 =========
 
