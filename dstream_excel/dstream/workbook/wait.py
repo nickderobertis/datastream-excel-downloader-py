@@ -39,3 +39,11 @@ def _get_cell_value_by_index(excel, x, y):
         return result
     except AttributeError:
         raise WorkbookClosedException('Workbook was not open when trying to populate values.')
+
+
+def _get_cell_by_index(excel, x, y):
+    try:
+        result = excel.ActiveSheet.Cells(x, y)
+        return result
+    except AttributeError:
+        raise WorkbookClosedException('Workbook was not open when trying to populate values.')

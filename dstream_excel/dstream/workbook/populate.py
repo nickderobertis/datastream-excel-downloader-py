@@ -6,7 +6,12 @@ import pythoncom
 
 
 from dstream_excel.excel.tools import _restart_excel_with_addins_and_attach
-from .wait import _wait_for_datastream_result, WorkbookClosedException, DatastreamDataErrorException
+from .wait import (
+    _wait_for_datastream_result,
+    WorkbookClosedException,
+    DatastreamDataErrorException,
+    _get_cell_by_index
+)
 from dstream_excel.excel.exceptions import NoExcelWorkbookException
 
 def populate_datastream_for_file(filepath, excel, retries_remaining=3, close_workbook=False, index=0):
@@ -45,12 +50,20 @@ def populate_datastream_for_file(filepath, excel, retries_remaining=3, close_wor
         excel = _restart_excel_with_addins_and_attach(start_sleep=60)
         return populate_datastream_for_file(filepath, excel, retries_remaining=retries_remaining - 1, close_workbook=True)
 
+
 def _populate_datastream_for_file(filepath, excel):
     wb = excel.Workbooks.Open(filepath)
+    _run_datastream_func(excel)
     successful = _wait_for_datastream_result(excel)
     _copy_paste_values(excel, wb)
     excel.ActiveWorkbook.Close(SaveChanges=True)
     return successful
+
+
+def _run_datastream_func(excel):
+    dstream_func_cell = _get_cell_by_index(excel, 1, 1)
+    dstream_func_cell.Activate()
+    dstream_func_cell.Calculate()
 
 
 def _copy_paste_values(excel, wb, range='A1:J10000'):
