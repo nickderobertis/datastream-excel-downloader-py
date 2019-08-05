@@ -12,7 +12,7 @@ class FileProcessTracker:
         if folder is None:
             self.folder = os.getcwd()
         else:
-            self.folder = folder
+            self.folder = os.path.abspath(folder)
 
         self.completed_list_path = os.path.join(self.folder, 'completed.txt')
 
