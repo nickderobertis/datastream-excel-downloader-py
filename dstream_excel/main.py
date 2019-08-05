@@ -23,7 +23,7 @@ def download_datastream(work_folder: str, symbol_list: Sequence[str], variables:
     :return: None
     """
     print(f'Creating XLSX files with functions in {work_folder}')
-    create_all_xlsx_with_datastream_command(work_folder, symbol_list, variables, dstream_kwargs=dstream_kwargs)
+    create_all_xlsx_with_datastream_command(work_folder, symbol_list, variables, **dstream_kwargs)
     print(f'Populating XLSX files with data in {work_folder}')
     populate_all_files_in_folder(work_folder)
     print(f'Combining all XLSX files in {work_folder} into a single CSV file {outpath}')
