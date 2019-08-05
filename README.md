@@ -1,14 +1,15 @@
-# pypi-sphinx-quickstart
+# dstream_excel
 
 ## Overview
 
-This repo is a template to use for starting a new Python package
-which is hosted on PyPi and uses Sphinx for documentation
-hosted on Github pages.
+Automate data collection from Thompson Reuters Datastream using the excel plugin
+
+Use this tool to drive Excel using the Thompson Reuters Eikon plugin to 
+download Datastream data. 
 
 ## Links
 
-See the example 
-[generated documentation here.](
-https://whoopnip.github.io/pypi-sphinx-quickstart/
+See the 
+[documentation here.](
+https://whoopnip.github.io/datastream-excel-downloader-py/
 )
