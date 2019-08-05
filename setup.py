@@ -15,4 +15,6 @@ setup(
     include_package_data=True,
     classifiers=conf.PACKAGE_CLASSIFIERS,
     install_requires=conf.PACKAGE_INSTALL_REQUIRES,
+    project_urls=conf.PACKAGE_URLS,
+    url=conf.PACKAGE_URLS['Code']
 )
