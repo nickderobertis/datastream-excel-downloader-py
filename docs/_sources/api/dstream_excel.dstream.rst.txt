@@ -1,0 +1,37 @@
+dstream\_excel.dstream package
+==============================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   dstream_excel.dstream.workbook
+
+Submodules
+----------
+
+dstream\_excel.dstream.combine module
+-------------------------------------
+
+.. automodule:: dstream_excel.dstream.combine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.dstream.downloader module
+----------------------------------------
+
+.. automodule:: dstream_excel.dstream.downloader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.dstream
+   :members:
+   :undoc-members:
+   :show-inheritance:

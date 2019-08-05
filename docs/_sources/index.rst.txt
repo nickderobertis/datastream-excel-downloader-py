@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Quick Start Example documentation!
-*********************************************
+Welcome to Datastream Python Excel Downloader Documentation!
+*************************************************************
 
-Some intro text. To get started, look here.
+To get started, look here.
 
 .. toctree::
 
@@ -16,31 +16,15 @@ Some intro text. To get started, look here.
 An overview
 ===========
 
-
-My Module
-------------
-
-Some highlighted functionality from my module.
-
-This is a simple example::
-
-    import py_qs_example
-
-    obj = py_qs_example.mymodule.ExampleClass(5, int)
-    print('done')
+For usage, see :ref:`tutorial`. The main functions are highlighted here.
 
 .. autosummary::
 
-      py_qs_example.mymodule.ExampleClass
-      py_qs_example.mymodule.example_function
+      dstream_excel.main.download_datastream
+      dstream_excel.dstream.workbook.create.create_all_xlsx_with_datastream_command
+      dstream_excel.dstream.downloader.populate_all_files_in_folder
+      dstream_excel.dstream.combine.combine_all_datastream_xlsx
 
-My Package
-----------------
-
-.. autosummary::
-
-      py_qs_example.mypackage.module.ExampleClass2
-      py_qs_example.mypackage.module.example_function2
 
 API Documentation
 ------------------

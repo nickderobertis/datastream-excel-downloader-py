@@ -1,0 +1,30 @@
+dstream\_excel.tracker package
+==============================
+
+Submodules
+----------
+
+dstream\_excel.tracker.files module
+-----------------------------------
+
+.. automodule:: dstream_excel.tracker.files
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.tracker.timing module
+------------------------------------
+
+.. automodule:: dstream_excel.tracker.timing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.tracker
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,22 @@
+dstream\_excel.tools package
+============================
+
+Submodules
+----------
+
+dstream\_excel.tools.ext\_pandas module
+---------------------------------------
+
+.. automodule:: dstream_excel.tools.ext_pandas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.tools
+   :members:
+   :undoc-members:
+   :show-inheritance:

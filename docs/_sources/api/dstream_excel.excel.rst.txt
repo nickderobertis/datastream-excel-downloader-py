@@ -1,0 +1,46 @@
+dstream\_excel.excel package
+============================
+
+Submodules
+----------
+
+dstream\_excel.excel.addin module
+---------------------------------
+
+.. automodule:: dstream_excel.excel.addin
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.excel.excel module
+---------------------------------
+
+.. automodule:: dstream_excel.excel.excel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.excel.exceptions module
+--------------------------------------
+
+.. automodule:: dstream_excel.excel.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.excel.tools module
+---------------------------------
+
+.. automodule:: dstream_excel.excel.tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.excel
+   :members:
+   :undoc-members:
+   :show-inheritance:

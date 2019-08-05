@@ -1,0 +1,38 @@
+dstream\_excel.workbook package
+===============================
+
+Submodules
+----------
+
+dstream\_excel.workbook.create module
+-------------------------------------
+
+.. automodule:: dstream_excel.workbook.create
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.workbook.exceptions module
+-----------------------------------------
+
+.. automodule:: dstream_excel.workbook.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.workbook.read module
+-----------------------------------
+
+.. automodule:: dstream_excel.workbook.read
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.workbook
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dstream_excel.excel.tools &#8212; dstream_excel 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dstream_excel.excel.tools</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">pythoncom</span>
+<span class="kn">import</span> <span class="nn">win32com.client</span>
+<span class="kn">from</span> <span class="nn">win32com.client</span> <span class="k">import</span> <span class="n">Dispatch</span><span class="p">,</span> <span class="n">GetActiveObject</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">NoExcelWorkbookException</span>
+
+
+<span class="k">def</span> <span class="nf">_kill_excel</span><span class="p">():</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;taskkill /f /im excel.exe&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_load_excel</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">xl</span> <span class="o">=</span> <span class="n">Dispatch</span><span class="p">(</span><span class="s1">&#39;Excel.Application&#39;</span><span class="p">)</span>
+    <span class="n">xl</span><span class="o">.</span><span class="n">Visible</span> <span class="o">=</span> <span class="n">visible</span>
+
+    <span class="k">return</span> <span class="n">xl</span>
+
+<span class="k">def</span> <span class="nf">_connect_to_running_excel</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">xl</span> <span class="o">=</span> <span class="n">GetActiveObject</span><span class="p">(</span><span class="s1">&#39;Excel.Application&#39;</span><span class="p">)</span>
+    <span class="n">xl</span><span class="o">.</span><span class="n">Visible</span> <span class="o">=</span> <span class="n">visible</span>
+
+    <span class="k">return</span> <span class="n">xl</span>
+
+<span class="k">def</span> <span class="nf">_restart_excel_with_addins_and_attach</span><span class="p">(</span><span class="n">restart_sleep</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">start_sleep</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">_kill_excel</span><span class="p">()</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">restart_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_start_excel_with_addins_and_attach</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="n">start_sleep</span><span class="p">,</span> <span class="n">tries_remaining</span><span class="o">=</span><span class="n">max_retries</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_start_excel_with_addins_and_attach</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">tries_remaining</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">tries_remaining</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NoExcelWorkbookException</span><span class="p">(</span><span class="s1">&#39;Tried 3 times and was still not able to start Excel and connect to open workbook&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">excel</span> <span class="o">=</span> <span class="n">_start_excel_and_attach</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="n">sleep</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NoExcelWorkbookException</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">_kill_excel</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">excel</span> <span class="o">=</span> <span class="n">_start_excel_with_addins_and_attach</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="n">sleep</span><span class="p">,</span> <span class="n">tries_remaining</span><span class="o">=</span><span class="n">tries_remaining</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">excel</span>
+
+<span class="k">def</span> <span class="nf">_start_excel_and_attach</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">_start_excel_with_addins</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="n">sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_get_excel_running_workbook</span><span class="p">(</span><span class="s1">&#39;Book1.xlsx&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_start_excel_with_addins</span><span class="p">(</span><span class="n">sleep</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">new_excel_command</span><span class="p">()</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_excel_running_workbook</span><span class="p">(</span><span class="n">workbook_name</span><span class="p">):</span>
+    <span class="n">lenstr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">workbook_name</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">pythoncom</span><span class="o">.</span><span class="n">GetRunningObjectTable</span><span class="p">()</span>
+    <span class="n">rotenum</span> <span class="o">=</span> <span class="n">rot</span><span class="o">.</span><span class="n">EnumRunning</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">monikers</span> <span class="o">=</span> <span class="n">rotenum</span><span class="o">.</span><span class="n">Next</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">monikers</span><span class="p">:</span> <span class="k">break</span>
+
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">pythoncom</span><span class="o">.</span><span class="n">CreateBindCtx</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">monikers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">GetDisplayName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="o">-</span><span class="n">lenstr</span><span class="p">:]</span> <span class="o">==</span> <span class="n">workbook_name</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">rot</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">monikers</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">NoExcelWorkbookException</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Could not find open workbook </span><span class="si">{workbook_name}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">workbook</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">gencache</span><span class="o">.</span><span class="n">EnsureDispatch</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">QueryInterface</span><span class="p">(</span><span class="n">pythoncom</span><span class="o">.</span><span class="n">IID_IDispatch</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">workbook</span><span class="o">.</span><span class="n">Application</span>
+
+<div class="viewcode-block" id="new_excel_command"><a class="viewcode-back" href="../../../api/dstream_excel.excel.html#dstream_excel.excel.tools.new_excel_command">[docs]</a><span class="k">def</span> <span class="nf">new_excel_command</span><span class="p">():</span>
+    <span class="c1">### TEMP</span>
+    <span class="c1"># Need to not hardcode filepaths. Can generalize by writing functions to find excel and create blank workbook</span>
+    <span class="n">excel_filepath</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE&#39;</span>
+    <span class="n">workbook_filepath</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\derobertisna.UFAD\Dropbox (Personal)\UF\Andy\ETF Project\Temp\Book1.xlsx&#39;</span>
+    <span class="k">return</span> <span class="n">_new_excel_command</span><span class="p">(</span><span class="n">excel_filepath</span><span class="p">,</span> <span class="n">workbook_filepath</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_new_excel_command</span><span class="p">(</span><span class="n">excel_filepath</span><span class="p">,</span> <span class="n">workbook_filepath</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;&quot;</span><span class="si">{excel_filepath}</span><span class="s1">&quot; &quot;</span><span class="si">{workbook_filepath}</span><span class="s1">&quot;&#39;</span>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Getting started with dstream_excel</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">dstream_excel</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Nick DeRobertis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

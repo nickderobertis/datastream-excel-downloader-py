@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dstream_excel.dstream.workbook.create &#8212; dstream_excel 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dstream_excel.dstream.workbook.create</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">dstream_excel.workbook.create</span> <span class="k">import</span> <span class="n">get_workbook_and_worksheet</span>
+<span class="kn">from</span> <span class="nn">.functions</span> <span class="k">import</span> <span class="n">DatastreamExcelFunction</span>
+<span class="kn">from</span> <span class="nn">.filename</span> <span class="k">import</span> <span class="n">_valid_filename_from_symbol</span>
+
+
+<div class="viewcode-block" id="create_all_xlsx_with_datastream_command"><a class="viewcode-back" href="../../../../api/dstream_excel.dstream.workbook.html#dstream_excel.dstream.workbook.create.create_all_xlsx_with_datastream_command">[docs]</a><span class="k">def</span> <span class="nf">create_all_xlsx_with_datastream_command</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbol_list</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+                                            <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates XLSX files containing Datastream functions</span>
+
+<span class="sd">    The XLSX files will not be populated with data at this point, only the function itself. The files must then</span>
+<span class="sd">    be populated, then combined.</span>
+
+<span class="sd">    :param folder: Folder in which to create Excel files</span>
+<span class="sd">    :param symbol_list: Datastream symbols representing companies. Available by selecting a list through filters</span>
+<span class="sd">        in Eikon, then getting an output of that list.</span>
+<span class="sd">    :param variables: Time-series variables to download</span>
+<span class="sd">    :param dstream_kwargs: can pass begin, end, or freq. All of these arguments take day, month, and year as</span>
+<span class="sd">        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to any one of these and combined with</span>
+<span class="sd">        a time modifier, e.g. begin=&#39;-5Y&#39;. Don&#39;t pass end to have the data go up to current.</span>
+<span class="sd">    :return: None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">[</span><span class="n">create_xlsx_with_datastream_command</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbol_list</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="create_xlsx_with_datastream_command"><a class="viewcode-back" href="../../../../api/dstream_excel.dstream.workbook.html#dstream_excel.dstream.workbook.create.create_xlsx_with_datastream_command">[docs]</a><span class="k">def</span> <span class="nf">create_xlsx_with_datastream_command</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">):</span>
+    <span class="n">wb</span><span class="p">,</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">get_workbook_and_worksheet</span><span class="p">()</span>
+    <span class="n">_fill_with_datastream_command</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">f</span><span class="s1">&#39;{_valid_filename_from_symbol(symbol)}.xlsx&#39;</span><span class="p">)</span>
+    <span class="n">wb</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">_load_symbols</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Symbol&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Symbol&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1">##### Helper functions ####</span>
+
+<span class="k">def</span> <span class="nf">_fill_with_datastream_command</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">[</span><span class="s1">&#39;A1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DatastreamExcelFunction</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span><span class="o">.</span><span class="n">time_series</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Create XLSX files with datastream functions ready to be opened for pulling data&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span><span class="s1">&#39;--folder&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\derobertisna.UFAD\Dropbox (Personal)\UF\Andy\ETF Project\Data\Datastream\inprogress&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span><span class="s1">&#39;--symbols-path&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\derobertisna.UFAD\Dropbox (Personal)\UF\Andy\ETF Project\Data\Datastream\japan equities list.csv&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--variables&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;UP;RI;NOSH;VO&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;--begin&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;-20Y&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-e&#39;</span><span class="p">,</span> <span class="s1">&#39;--end&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">_load_symbols</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">symbols_path</span><span class="p">)</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+
+    <span class="n">create_all_xlsx_with_datastream_command</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span>
+        <span class="n">symbols</span><span class="p">,</span>
+        <span class="n">variables</span><span class="p">,</span>
+        <span class="n">begin</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">begin</span><span class="p">,</span>
+        <span class="n">end</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">end</span>
+    <span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../index.html">Table of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Getting started with dstream_excel</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/modules.html">dstream_excel</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Nick DeRobertis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
