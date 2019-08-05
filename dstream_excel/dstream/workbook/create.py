@@ -4,7 +4,7 @@ import os
 
 import pandas as pd
 
-from dstream_excel.workbook.create import _get_workbook_and_worksheet
+from dstream_excel.workbook.create import get_workbook_and_worksheet
 from .functions import DatastreamExcelFunction
 from .filename import _valid_filename_from_symbol
 
@@ -29,7 +29,7 @@ def create_all_xlsx_with_datastream_command(folder: str, symbol_list: Sequence[s
     [create_xlsx_with_datastream_command(folder, symbol, variables, **dstream_kwargs) for symbol in symbol_list]
 
 def create_xlsx_with_datastream_command(folder, symbol, variables, **dstream_kwargs):
-    wb, ws = _get_workbook_and_worksheet()
+    wb, ws = get_workbook_and_worksheet()
     _fill_with_datastream_command(ws, symbol, variables, **dstream_kwargs)
 
     if not os.path.exists(folder): os.makedirs(folder)

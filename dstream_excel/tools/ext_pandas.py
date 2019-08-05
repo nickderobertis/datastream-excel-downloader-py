@@ -4,7 +4,6 @@ import os
 import time
 import re
 import datetime
-import numpy as np
 from functools import partial
 
 def append_csvs_to_csv(csv_filepath_list, outpath=None):
@@ -38,19 +37,6 @@ def append_csv_to_monthly_csv_of_first_date(inpath, rootname):
 
 def append_df_to_monthly_csv_of_first_date(df_for_append, rootname):
     year_month_str = first_year_month_in_df(df_for_append)
-
-    outpath = rootname + year_month_str + '.csv'
-    append_df_to_csv(df_for_append, outpath)
-
-def append_csvs_to_monthly_csv_by_filename(csv_filepath_list, rootname):
-    [append_csv_to_monthly_csv_by_filename(inpath, rootname) for inpath in csv_filepath_list]
-
-def append_csv_to_monthly_csv_by_filename(inpath, rootname):
-    df_for_append = pd.read_csv(inpath)  # load new data
-    return append_df_to_monthly_csv_by_filename(df_for_append, inpath, rootname)
-
-def append_df_to_monthly_csv_by_filename(df_for_append, filename, rootname):
-    year_month_str = _year_month_string_from_morningstar_filename(filename)
 
     outpath = rootname + year_month_str + '.csv'
     append_df_to_csv(df_for_append, outpath)
@@ -146,11 +132,6 @@ def add_year_month_column_from_date_string_column(df, date_str_col='Date'):
     """
 
     df['YearMonth'] = df[date_str_col].apply(_year_month_from_date_string)
-
-def _year_month_string_from_morningstar_filename(name):
-    p = re.compile(r'.*(\d+)\-(\d\d\d\d)\-(\d\d)\-(\d\d)')
-    m = p.match(name)
-    return m.group(2) + m.group(3)
 
 
 def convert_excel_date_to_pandas_date(exceldates):

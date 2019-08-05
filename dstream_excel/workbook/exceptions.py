@@ -1,0 +1,4 @@
+
+
+class DataNotPopulatedException(Exception):
+    pass
