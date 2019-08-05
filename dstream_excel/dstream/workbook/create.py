@@ -22,7 +22,7 @@ def create_all_xlsx_with_datastream_command(folder: str, symbol_list: Sequence[s
         in Eikon, then getting an output of that list.
     :param variables: Time-series variables to download
     :param dstream_kwargs: can pass begin, end, or freq. All of these arguments take day, month, and year as
-        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to any one of these and combined with
+        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
         a time modifier, e.g. begin='-5Y'. Don't pass end to have the data go up to current.
     :return: None
     """

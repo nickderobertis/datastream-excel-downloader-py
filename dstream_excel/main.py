@@ -18,7 +18,7 @@ def download_datastream(work_folder: str, symbol_list: Sequence[str], variables:
     :param variables: Time-series variables to download
     :param outpath: Full file path to output csv to
     :param dstream_kwargs: can pass begin, end, or freq. All of these arguments take day, month, and year as
-        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to any one of these and combined with
+        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
         a time modifier, e.g. begin='-5Y'. Don't pass end to have the data go up to current.
     :return: None
     """

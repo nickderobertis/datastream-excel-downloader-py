@@ -47,9 +47,18 @@ This is a simple example::
         ['UP', 'RI', 'NOSH', 'VO'],  # Variable names from Datastream
         outpath='data.csv',
         freq='D',
-        begin='-1M'
+        begin='-1Y'
     )
 
+
+You may see errors relating to calling Excel and that Excel has been terminated.
+There is retry logic built into the package as Excel does not respond very
+consistently in this way, so Excel may be terminated and restarted many
+times in the process of downloading.
+
+A `failed` folder will be created and any XLSX that were unable
+to pull data after several retries will be moved here so that they can be
+re-run later.
 
 Troubleshooting
 ================
