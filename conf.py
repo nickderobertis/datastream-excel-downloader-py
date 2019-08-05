@@ -49,6 +49,17 @@ PACKAGE_INSTALL_REQUIRES = [
     # e.g.
     # 'package',
     # 'otherpackage>=1,<2'
+    'pypiwin32',
+    'pandas',
+    'numpy',
+    'openpyxl'
+]
+
+# Sphinx executes all the import statements as it generates the documentation. To avoid having to install all
+# the necessary packages, third-party packages can be passed to mock imports to just skip the import.
+# By default, everything in PACKAGE_INSTALL_REQUIRES will be passed as mock imports, along with anything here.
+# This variable is useful if a package includes multiple packages which need to be ignored.
+DOCS_OTHER_MOCK_IMPORTS = [
     'pythoncom',
     'win32com',
     'pywintypes'

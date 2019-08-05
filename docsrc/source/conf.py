@@ -52,7 +52,9 @@ set_type_checking_flag = True
 
 # Options for sphinx.ext.autosummary
 autodoc_default_flags = ['members']
+autodoc_mock_imports = conf.PACKAGE_INSTALL_REQUIRES + conf.DOCS_OTHER_MOCK_IMPORTS
 autosummary_generate = True
+autosummary_imported_members = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
