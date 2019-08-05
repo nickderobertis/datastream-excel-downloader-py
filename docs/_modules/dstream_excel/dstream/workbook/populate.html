@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.dstream.workbook.populate &#8212; dstream_excel 0.1.0 documentation</title>
+    <title>dstream_excel.dstream.workbook.populate &#8212; dstream_excel 0.2.3 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -39,7 +39,12 @@
 
 
 <span class="kn">from</span> <span class="nn">dstream_excel.excel.tools</span> <span class="k">import</span> <span class="n">_restart_excel_with_addins_and_attach</span>
-<span class="kn">from</span> <span class="nn">.wait</span> <span class="k">import</span> <span class="n">_wait_for_datastream_result</span><span class="p">,</span> <span class="n">WorkbookClosedException</span><span class="p">,</span> <span class="n">DatastreamDataErrorException</span>
+<span class="kn">from</span> <span class="nn">.wait</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">_wait_for_datastream_result</span><span class="p">,</span>
+    <span class="n">WorkbookClosedException</span><span class="p">,</span>
+    <span class="n">DatastreamDataErrorException</span><span class="p">,</span>
+    <span class="n">_get_cell_by_index</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">dstream_excel.excel.exceptions</span> <span class="k">import</span> <span class="n">NoExcelWorkbookException</span>
 
 <div class="viewcode-block" id="populate_datastream_for_file"><a class="viewcode-back" href="../../../../api/dstream_excel.dstream.workbook.html#dstream_excel.dstream.workbook.populate.populate_datastream_for_file">[docs]</a><span class="k">def</span> <span class="nf">populate_datastream_for_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">excel</span><span class="p">,</span> <span class="n">retries_remaining</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">close_workbook</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -78,12 +83,20 @@
         <span class="n">excel</span> <span class="o">=</span> <span class="n">_restart_excel_with_addins_and_attach</span><span class="p">(</span><span class="n">start_sleep</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">populate_datastream_for_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">excel</span><span class="p">,</span> <span class="n">retries_remaining</span><span class="o">=</span><span class="n">retries_remaining</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">close_workbook</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
+
 <span class="k">def</span> <span class="nf">_populate_datastream_for_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">excel</span><span class="p">):</span>
     <span class="n">wb</span> <span class="o">=</span> <span class="n">excel</span><span class="o">.</span><span class="n">Workbooks</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">_run_datastream_func</span><span class="p">(</span><span class="n">excel</span><span class="p">)</span>
     <span class="n">successful</span> <span class="o">=</span> <span class="n">_wait_for_datastream_result</span><span class="p">(</span><span class="n">excel</span><span class="p">)</span>
     <span class="n">_copy_paste_values</span><span class="p">(</span><span class="n">excel</span><span class="p">,</span> <span class="n">wb</span><span class="p">)</span>
     <span class="n">excel</span><span class="o">.</span><span class="n">ActiveWorkbook</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="n">SaveChanges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">successful</span>
+
+
+<span class="k">def</span> <span class="nf">_run_datastream_func</span><span class="p">(</span><span class="n">excel</span><span class="p">):</span>
+    <span class="n">dstream_func_cell</span> <span class="o">=</span> <span class="n">_get_cell_by_index</span><span class="p">(</span><span class="n">excel</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dstream_func_cell</span><span class="o">.</span><span class="n">Activate</span><span class="p">()</span>
+    <span class="n">dstream_func_cell</span><span class="o">.</span><span class="n">Calculate</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">_copy_paste_values</span><span class="p">(</span><span class="n">excel</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="s1">&#39;A1:J10000&#39;</span><span class="p">):</span>

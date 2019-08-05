@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Getting started with dstream_excel &#8212; dstream_excel 0.1.0 documentation</title>
+    <title>Getting started with dstream_excel &#8212; dstream_excel 0.2.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -42,6 +42,10 @@
 </div>
 <p>You must also be running Windows, have Excel installed, have Eikon installed,
 and have the Eikon plugin for Excel installed.</p>
+<p>There is one setting in the Excel plugin that makes or breaks this
+automation. Go to the Thompson Reuters Datatream tab, click Options.
+In Calculation Options, make sure “Suppress Auto Calculation on Open”
+is unchecked.</p>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
@@ -69,10 +73,17 @@ the three steps described above: <a class="reference internal" href="api/dstream
     <span class="p">[</span><span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span> <span class="s1">&#39;NOSH&#39;</span><span class="p">,</span> <span class="s1">&#39;VO&#39;</span><span class="p">],</span>  <span class="c1"># Variable names from Datastream</span>
     <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span>
     <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
-    <span class="n">begin</span><span class="o">=</span><span class="s1">&#39;-1M&#39;</span>
+    <span class="n">begin</span><span class="o">=</span><span class="s1">&#39;-1Y&#39;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>You may see errors relating to calling Excel and that Excel has been terminated.
+There is retry logic built into the package as Excel does not respond very
+consistently in this way, so Excel may be terminated and restarted many
+times in the process of downloading.</p>
+<p>A <cite>failed</cite> folder will be created and any XLSX that were unable
+to pull data after several retries will be moved here so that they can be
+re-run later.</p>
 </div>
 <div class="section" id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>

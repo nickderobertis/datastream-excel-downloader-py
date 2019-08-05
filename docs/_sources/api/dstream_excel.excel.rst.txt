@@ -28,10 +28,26 @@ dstream\_excel.excel.exceptions module
    :undoc-members:
    :show-inheritance:
 
+dstream\_excel.excel.path module
+--------------------------------
+
+.. automodule:: dstream_excel.excel.path
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 dstream\_excel.excel.tools module
 ---------------------------------
 
 .. automodule:: dstream_excel.excel.tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.excel.wb\_template module
+----------------------------------------
+
+.. automodule:: dstream_excel.excel.wb_template
    :members:
    :undoc-members:
    :show-inheritance:

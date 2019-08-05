@@ -65,7 +65,8 @@ PACKAGE_INSTALL_REQUIRES = [
 DOCS_OTHER_MOCK_IMPORTS = [
     'pythoncom',
     'win32com',
-    'pywintypes'
+    'pywintypes',
+    'winreg'
 ]
 
 PACKAGE_URLS = {

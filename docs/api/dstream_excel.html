@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel package &#8212; dstream_excel 0.1.0 documentation</title>
+    <title>dstream_excel package &#8212; dstream_excel 0.2.3 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -64,7 +64,9 @@
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.addin">dstream_excel.excel.addin module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.excel">dstream_excel.excel.excel module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.exceptions">dstream_excel.excel.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.path">dstream_excel.excel.path module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.tools">dstream_excel.excel.tools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel.wb_template">dstream_excel.excel.wb_template module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.excel.html#module-dstream_excel.excel">Module contents</a></li>
 </ul>
 </li>
@@ -130,7 +132,7 @@ in Eikon, then getting an output of that list.</p></li>
 <li><p><strong>variables</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Time-series variables to download</p></li>
 <li><p><strong>outpath</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Full file path to output csv to</p></li>
 <li><p><strong>dstream_kwargs</strong> – can pass begin, end, or freq. All of these arguments take day, month, and year as
-D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to any one of these and combined with
+D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
 a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up to current.</p></li>
 </ul>
 </dd>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.excel.tools &#8212; dstream_excel 0.1.0 documentation</title>
+    <title>dstream_excel.excel.tools &#8212; dstream_excel 0.2.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,6 +39,8 @@
 <span class="kn">import</span> <span class="nn">win32com.client</span>
 <span class="kn">from</span> <span class="nn">win32com.client</span> <span class="k">import</span> <span class="n">Dispatch</span><span class="p">,</span> <span class="n">GetActiveObject</span>
 
+<span class="kn">from</span> <span class="nn">dstream_excel.excel.path</span> <span class="k">import</span> <span class="n">get_excel_path</span>
+<span class="kn">from</span> <span class="nn">dstream_excel.excel.wb_template</span> <span class="k">import</span> <span class="n">XLSX_TEMPLATE_BINARY</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">NoExcelWorkbookException</span>
 
 
@@ -113,9 +115,20 @@
 <div class="viewcode-block" id="new_excel_command"><a class="viewcode-back" href="../../../api/dstream_excel.excel.html#dstream_excel.excel.tools.new_excel_command">[docs]</a><span class="k">def</span> <span class="nf">new_excel_command</span><span class="p">():</span>
     <span class="c1">### TEMP</span>
     <span class="c1"># Need to not hardcode filepaths. Can generalize by writing functions to find excel and create blank workbook</span>
-    <span class="n">excel_filepath</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Program Files (x86)\Microsoft Office\Office16\EXCEL.EXE&#39;</span>
-    <span class="n">workbook_filepath</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;C:\Users\derobertisna.UFAD\Dropbox (Personal)\UF\Andy\ETF Project\Temp\Book1.xlsx&#39;</span>
+    <span class="n">excel_filepath</span> <span class="o">=</span> <span class="n">get_excel_path</span><span class="p">()</span>
+
+    <span class="c1"># Need excel opening an empty workbook</span>
+    <span class="n">wb_home_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;~&#39;</span><span class="p">,</span><span class="s1">&#39;Book1.xlsx&#39;</span><span class="p">])</span>
+    <span class="n">workbook_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">wb_home_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">workbook_filepath</span><span class="p">):</span>
+        <span class="n">create_empty_workbook</span><span class="p">(</span><span class="n">workbook_filepath</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">_new_excel_command</span><span class="p">(</span><span class="n">excel_filepath</span><span class="p">,</span> <span class="n">workbook_filepath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_empty_workbook"><a class="viewcode-back" href="../../../api/dstream_excel.excel.html#dstream_excel.excel.tools.create_empty_workbook">[docs]</a><span class="k">def</span> <span class="nf">create_empty_workbook</span><span class="p">(</span><span class="n">outpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outpath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">XLSX_TEMPLATE_BINARY</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_new_excel_command</span><span class="p">(</span><span class="n">excel_filepath</span><span class="p">,</span> <span class="n">workbook_filepath</span><span class="p">):</span>
