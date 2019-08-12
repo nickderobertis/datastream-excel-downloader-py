@@ -5,14 +5,14 @@ import traceback, sys
 import pythoncom
 
 
-from dstream_excel.excel.tools import _restart_excel_with_addins_and_attach
+from exceldriver.tools import _restart_excel_with_addins_and_attach
 from .wait import (
     _wait_for_datastream_result,
     WorkbookClosedException,
     DatastreamDataErrorException,
     _get_cell_by_index
 )
-from dstream_excel.excel.exceptions import NoExcelWorkbookException
+from exceldriver.exceptions import NoExcelWorkbookException
 
 def populate_datastream_for_file(filepath, excel, retries_remaining=3, close_workbook=False, index=0):
     """

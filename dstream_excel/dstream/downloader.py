@@ -3,7 +3,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
 from dstream_excel.fileops import get_path_of_failed_folder_add_if_necessary, move_file_to_failed_folder
-from dstream_excel.excel.tools import _start_excel_with_addins_and_attach, _restart_excel_with_addins_and_attach
+from exceldriver.tools import _start_excel_with_addins_and_attach, _restart_excel_with_addins_and_attach
 from dstream_excel.tracker.files import FileProcessTracker
 from .workbook.populate import populate_datastream_for_file
 
