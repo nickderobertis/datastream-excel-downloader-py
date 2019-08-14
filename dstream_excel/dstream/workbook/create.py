@@ -4,7 +4,7 @@ import os
 
 import pandas as pd
 
-from dstream_excel.workbook.create import get_workbook_and_worksheet
+from exceldriver.workbook.create import get_workbook_and_worksheet
 from .functions import DatastreamExcelFunction
 from .filename import _valid_filename_from_symbol
 
