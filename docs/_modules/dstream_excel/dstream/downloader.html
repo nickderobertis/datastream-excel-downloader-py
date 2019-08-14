@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.dstream.downloader &#8212; dstream_excel 0.2.3 documentation</title>
+    <title>dstream_excel.dstream.downloader &#8212; dstream_excel 0.3.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
 <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="k">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="ne">TimeoutError</span>
 
 <span class="kn">from</span> <span class="nn">dstream_excel.fileops</span> <span class="k">import</span> <span class="n">get_path_of_failed_folder_add_if_necessary</span><span class="p">,</span> <span class="n">move_file_to_failed_folder</span>
-<span class="kn">from</span> <span class="nn">dstream_excel.excel.tools</span> <span class="k">import</span> <span class="n">_start_excel_with_addins_and_attach</span><span class="p">,</span> <span class="n">_restart_excel_with_addins_and_attach</span>
+<span class="kn">from</span> <span class="nn">exceldriver.tools</span> <span class="k">import</span> <span class="n">_start_excel_with_addins_and_attach</span><span class="p">,</span> <span class="n">_restart_excel_with_addins_and_attach</span>
 <span class="kn">from</span> <span class="nn">dstream_excel.tracker.files</span> <span class="k">import</span> <span class="n">FileProcessTracker</span>
 <span class="kn">from</span> <span class="nn">.workbook.populate</span> <span class="k">import</span> <span class="n">populate_datastream_for_file</span>
 

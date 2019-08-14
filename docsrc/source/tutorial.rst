@@ -18,6 +18,14 @@ automation. Go to the Thompson Reuters Datatream tab, click Options.
 In Calculation Options, make sure "Suppress Auto Calculation on Open"
 is unchecked.
 
+Also ensure that when you go to the Thomson Reuters and Thomson Reuters Datastream
+tabs, that the buttons are not grayed out. If they are, you have to go
+to the Thompson Reuters tab and click the "Offline" button. This should
+launch Eikon on your system and possibly require you to log in. It may
+be necessary to click the "Offline" button again after that. Once you are
+logged in, all the buttons should be highlighted on both tabs. Then you can
+close Excel and begin using :code:`dstream_excel`.
+
 Overview
 =========
 
