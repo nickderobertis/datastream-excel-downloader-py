@@ -56,6 +56,7 @@ def _populate_datastream_for_file(filepath, excel):
     _run_datastream_func(excel)
     successful = _wait_for_datastream_result(excel)
     _copy_paste_values(excel, wb)
+    _relabel_date(excel, wb)
     excel.ActiveWorkbook.Close(SaveChanges=True)
     return successful
 
@@ -71,3 +72,11 @@ def _copy_paste_values(excel, wb, range='A1:J10000'):
     ws.Range(range).Copy()
     ws.Range(range.split(':')[0]).PasteSpecial(Paste=constants.xlPasteValues, Operation=constants.xlNone)
     excel.CutCopyMode = False
+
+
+def _relabel_date(excel, wb, cell_range: str ='A1'):
+    """
+    Currently date is coming in with odd name, replace with Date
+    """
+    ws = wb.Sheets('Sheet')
+    ws.Range(cell_range).Value = 'Date'
