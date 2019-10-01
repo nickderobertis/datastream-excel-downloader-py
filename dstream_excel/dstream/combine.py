@@ -6,6 +6,7 @@ import pandas as pd
 
 from dstream_excel.tools.ext_pandas import _get_outpath_and_df_of_headers, _append_df_to_csv
 from dstream_excel.tracker.files import FileProcessTracker
+from dstream_excel.dstream.workbook.filename import _original_symbol_from_filename_symbol
 
 
 def combine_all_datastream_xlsx(infolder: str, outpath: str = 'all_data.csv', restart: bool = True):
@@ -85,7 +86,9 @@ def _new_name_for_datastream_column(col):
 def _datastream_filepath_to_iq_id(filepath):
     filename = os.path.basename(filepath) #strips folders, etc.
     pattern = re.compile(r'([\S\s]*)([.]xlsx)')
-    return pattern.match(filename).group(1)
+    ds_filename_id = pattern.match(filename).group(1)
+    ds_id = _original_symbol_from_filename_symbol(ds_filename_id)
+    return ds_id
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
