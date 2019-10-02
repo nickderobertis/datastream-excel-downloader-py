@@ -8,6 +8,10 @@ from dstream_excel.dstream.keepopen.extract import long_firm_df_from_ds_multi_fi
 from dstream_excel.dstream.workbook.functions import DatastreamExcelFunction
 from dstream_excel.dstream.keepopen.wait import wait_for_datastream_result
 from dstream_excel.dstream.keepopen.excel import get_empty_ws
+from dstream_excel.dstream.workbook.exceptions import (
+    DatastreamFunctionShouldBeReRunException,
+    DatastreamDataErrorException
+)
 
 
 def download_datastream_save_to_csvs(symbols: Sequence[str], variables: Sequence[str], out_folder: str = 'inprogress',
@@ -22,10 +26,12 @@ def download_datastream_save_to_csvs(symbols: Sequence[str], variables: Sequence
 def _download_datastream_save_to_csvs(ws: Sheet, symbols: Sequence[str], variables: Sequence[str],
                                       out_folder: str = 'inprogress',
                                       **ds_func_kwargs) -> pd.DataFrame:
-    dsef = DatastreamExcelFunction(symbols)
-    func_str = dsef.time_series(variables, **ds_func_kwargs)
-    ws.range('A1').value = func_str
-    wait_for_datastream_result(ws)
+    _write_ds_func_wait_for_result(
+        ws,
+        symbols,
+        variables,
+        **ds_func_kwargs
+    )
     wide_df = get_multi_firm_df_from_sheet(ws)
     df = long_firm_df_from_ds_multi_firm_df(wide_df, symbols, len(variables))
 
@@ -37,4 +43,22 @@ def _download_datastream_save_to_csvs(ws: Sheet, symbols: Sequence[str], variabl
     df.to_csv(out_path)
 
     return df
+
+
+def _write_ds_func_wait_for_result(ws: Sheet, symbols: Sequence[str], variables: Sequence[str], retries: int = 3,
+                                   **ds_func_kwargs):
+    dsef = DatastreamExcelFunction(symbols)
+    func_str = dsef.time_series(variables, **ds_func_kwargs)
+    while retries > 0:
+        try:
+            ws.range('A1').value = func_str
+            wait_for_datastream_result(ws)
+        except DatastreamFunctionShouldBeReRunException:
+            retries -= 1
+            if retries <= 0:
+                raise DatastreamDataErrorException('could not populate datastream values. likely #NAME? in cell')
+            continue
+        break
+
+
 
