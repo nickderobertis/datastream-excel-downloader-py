@@ -1,6 +1,7 @@
 from typing import Sequence
 import uuid
 import os
+import time
 import pandas as pd
 from xlwings.main import Sheet
 from processfiles.objs import ObjectProcessTracker
@@ -54,6 +55,7 @@ def _write_ds_func_wait_for_result(ws: Sheet, symbols: Sequence[str], variables:
             ws.range('A1').value = func_str
             wait_for_datastream_result(ws)
         except DatastreamFunctionShouldBeReRunException:
+            time.sleep(0.5)
             retries -= 1
             if retries <= 0:
                 raise DatastreamDataErrorException('could not populate datastream values. likely #NAME? in cell')
