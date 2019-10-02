@@ -56,7 +56,9 @@ PACKAGE_INSTALL_REQUIRES = [
     'numpy',
     'openpyxl',
     'xlrd',
-    'exceldriver'
+    'exceldriver',
+    'processfiles',
+    'xlwings',
 ]
 
 # Sphinx executes all the import statements as it generates the documentation. To avoid having to install all
