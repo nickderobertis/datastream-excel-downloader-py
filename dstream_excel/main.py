@@ -4,7 +4,7 @@ from dstream_excel.dstream.keepopen.combine import combine_all_datastream_csv
 
 
 def download_datastream(work_folder: str, symbol_list: Sequence[str], variables: Sequence[str],
-                        num_symbols_per_call: Optional[int] = 50, outpath: str = 'data.csv',
+                        num_symbols_per_call: Optional[int] = 20, outpath: str = 'data.csv',
                         restart: bool = False, **dstream_kwargs):
     """
     Function for full workflow to download data from Datastream.

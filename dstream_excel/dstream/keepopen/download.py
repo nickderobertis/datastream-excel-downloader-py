@@ -13,6 +13,7 @@ from dstream_excel.dstream.workbook.exceptions import (
     DatastreamFunctionShouldBeReRunException,
     DatastreamDataErrorException
 )
+from exceldriver.columns import get_n_cols_after_col
 
 
 def download_datastream_save_to_csvs(symbols: Sequence[str], variables: Sequence[str], out_folder: str = 'inprogress',
@@ -42,6 +43,10 @@ def _download_datastream_save_to_csvs(ws: Sheet, symbols: Sequence[str], variabl
     if not os.path.exists(out_folder):
         os.makedirs(out_folder)
     df.to_csv(out_path)
+
+    # Wipe output to prepare for next pull
+    end_data_col = get_n_cols_after_col('A', len(variables) * len(symbols))
+    ws.range(f'A:{end_data_col}').value = ''
 
     return df
 
