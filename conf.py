@@ -5,7 +5,7 @@
 PACKAGE_NAME = 'dstream_excel'
 
 # Package version in the format (major, minor, release)
-PACKAGE_VERSION_TUPLE = (0, 3, 3)
+PACKAGE_VERSION_TUPLE = (0, 4, 0)
 
 # Short description of the package
 PACKAGE_SHORT_DESCRIPTION = 'Automate data collection from Thompson Reuters Datastream ' \
