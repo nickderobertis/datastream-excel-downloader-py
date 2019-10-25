@@ -14,6 +14,7 @@ from dstream_excel.dstream.workbook.exceptions import (
     DatastreamDataErrorException
 )
 from exceldriver.columns import get_n_cols_after_col
+from pythoncom import com_error
 
 
 def download_datastream_save_to_csvs(symbols: Sequence[str], variables: Sequence[str], out_folder: str = 'inprogress',
@@ -59,11 +60,11 @@ def _write_ds_func_wait_for_result(ws: Sheet, symbols: Sequence[str], variables:
         try:
             ws.range('A1').value = func_str
             wait_for_datastream_result(ws)
-        except DatastreamFunctionShouldBeReRunException:
+        except (DatastreamFunctionShouldBeReRunException, com_error):
             time.sleep(0.5)
             retries -= 1
             if retries <= 0:
-                raise DatastreamDataErrorException('could not populate datastream values. likely #NAME? in cell')
+                raise DatastreamDataErrorException('could not populate datastream values.')
             continue
         break
 
