@@ -19,7 +19,25 @@ from pythoncom import com_error
 
 def download_datastream_save_to_csvs(symbols: Sequence[str], variables: Sequence[str], out_folder: str = 'inprogress',
                                      num_symbols_per_call: int = 50, restart: bool = False,
-                                     **ds_func_kwargs) -> pd.DataFrame:
+                                     **ds_func_kwargs):
+    """
+    Opens a workbook if necessary, then repeatedly switches out Datastream function, saves the values in
+    a csv, then goes to next Datastream function.
+
+    :param symbols: Datastream symbols representing companies. Available by selecting a list through filters
+        in Eikon, then getting an output of that list.
+    :param variables: Time-series variables to download
+    :param out_folder: Folder in which in process XLSX files will be generated
+    :param num_symbols_per_call: Number of firms to gather in one pull. Setting this higher should speed up data
+        collection, but may also make it less stable. If many variables and a longer history is being pulled,
+        a smaller number may be necessary.
+    :param restart: Whether to force a restart of download. If the process is stopped, it will be continued
+        where it left off if restart=False, and start from the beginning if restart=True.
+    :param ds_func_kwargs: can pass begin, end, or freq. All of these arguments take day, month, and year as
+        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
+        a time modifier, e.g. begin='-5Y'. Don't pass end to have the data go up to current.
+    :return: None
+    """
     ws = get_empty_ws()
     tracker = ObjectProcessTracker(symbols, restart=restart)
     for symbols_chunk in tracker.obj_generator(chunk=num_symbols_per_call):

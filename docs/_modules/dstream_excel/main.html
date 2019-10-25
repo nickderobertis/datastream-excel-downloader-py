@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.main &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>dstream_excel.main &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -31,36 +31,50 @@
           <div class="body" role="main">
             
   <h1>Source code for dstream_excel.main</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span> <span class="nn">dstream_excel.dstream.downloader</span> <span class="k">import</span> <span class="n">populate_all_files_in_folder</span>
-<span class="kn">from</span> <span class="nn">dstream_excel.dstream.combine</span> <span class="k">import</span> <span class="n">combine_all_datastream_xlsx</span>
-<span class="kn">from</span> <span class="nn">dstream_excel.dstream.workbook.create</span> <span class="k">import</span> <span class="n">create_all_xlsx_with_datastream_command</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">dstream_excel.dstream.keepopen.download</span> <span class="k">import</span> <span class="n">download_datastream_save_to_csvs</span>
+<span class="kn">from</span> <span class="nn">dstream_excel.dstream.keepopen.combine</span> <span class="k">import</span> <span class="n">combine_all_datastream_csv</span>
 
 
 <div class="viewcode-block" id="download_datastream"><a class="viewcode-back" href="../../api/dstream_excel.html#dstream_excel.main.download_datastream">[docs]</a><span class="k">def</span> <span class="nf">download_datastream</span><span class="p">(</span><span class="n">work_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbol_list</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">variables</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-                        <span class="n">outpath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">):</span>
+                        <span class="n">num_symbols_per_call</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">outpath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;data.csv&#39;</span><span class="p">,</span>
+                        <span class="n">restart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function for full workflow to download data from Datastream.</span>
 
-<span class="sd">    Creates XLSX files with Datastream functions, opens those workbooks to populate the data, then</span>
-<span class="sd">    combines the XLSX files into a single CSV.</span>
+<span class="sd">    Opens a workbook if necessary, then repeatedly switches out Datastream function, saves the values in</span>
+<span class="sd">    a csv, then goes to next Datastream function. Finally, combines the created csv files into a single csv.</span>
 
-<span class="sd">    :param work_folder: Folder in which in process XLSX files will be generated</span>
+<span class="sd">    This function is ultimately just a wrapper which calls:</span>
+<span class="sd">    :py:func:`.download_datastream_save_to_csvs` to download create many CSV files containing all the data</span>
+<span class="sd">    :py:func:`.combine_all_datastream_csv` to combine the many CSV files created in the process into a single CSV</span>
+
+<span class="sd">    :param work_folder: Folder in which in process CSV files will be generated</span>
 <span class="sd">    :param symbol_list: Datastream symbols representing companies. Available by selecting a list through filters</span>
 <span class="sd">        in Eikon, then getting an output of that list.</span>
 <span class="sd">    :param variables: Time-series variables to download</span>
+<span class="sd">    :param num_symbols_per_call: Number of firms to gather in one pull. Setting this higher should speed up data</span>
+<span class="sd">        collection, but may also make it less stable. If many variables and a longer history is being pulled,</span>
+<span class="sd">        a smaller number may be necessary.</span>
 <span class="sd">    :param outpath: Full file path to output csv to</span>
+<span class="sd">    :param restart: Whether to force a restart of download. If the process is stopped, it will be continued</span>
+<span class="sd">        where it left off if restart=False, and start from the beginning if restart=True.</span>
 <span class="sd">    :param dstream_kwargs: can pass begin, end, or freq. All of these arguments take day, month, and year as</span>
 <span class="sd">        D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with</span>
 <span class="sd">        a time modifier, e.g. begin=&#39;-5Y&#39;. Don&#39;t pass end to have the data go up to current.</span>
 <span class="sd">    :return: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Creating XLSX files with functions in </span><span class="si">{work_folder}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">create_all_xlsx_with_datastream_command</span><span class="p">(</span><span class="n">work_folder</span><span class="p">,</span> <span class="n">symbol_list</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Populating XLSX files with data in </span><span class="si">{work_folder}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">populate_all_files_in_folder</span><span class="p">(</span><span class="n">work_folder</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Combining all XLSX files in </span><span class="si">{work_folder}</span><span class="s1"> into a single CSV file </span><span class="si">{outpath}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">combine_all_datastream_xlsx</span><span class="p">(</span><span class="n">work_folder</span><span class="p">,</span> <span class="n">outpath</span><span class="o">=</span><span class="n">outpath</span><span class="p">)</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Populating XLSX file, saving to CSV files in </span><span class="si">{work_folder}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">download_datastream_save_to_csvs</span><span class="p">(</span>
+        <span class="n">symbol_list</span><span class="p">,</span>
+        <span class="n">variables</span><span class="p">,</span>
+        <span class="n">out_folder</span><span class="o">=</span><span class="n">work_folder</span><span class="p">,</span>
+        <span class="n">num_symbols_per_call</span><span class="o">=</span><span class="n">num_symbols_per_call</span><span class="p">,</span>
+        <span class="n">restart</span><span class="o">=</span><span class="n">restart</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">dstream_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Combining all CSV files in </span><span class="si">{work_folder}</span><span class="s1"> into a single CSV file </span><span class="si">{outpath}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">combine_all_datastream_csv</span><span class="p">(</span><span class="n">work_folder</span><span class="p">,</span> <span class="n">outpath</span><span class="o">=</span><span class="n">outpath</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -103,7 +117,7 @@
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

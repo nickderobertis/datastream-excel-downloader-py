@@ -21,9 +21,8 @@ For usage, see :ref:`tutorial`. The main functions are highlighted here.
 .. autosummary::
 
       dstream_excel.main.download_datastream
-      dstream_excel.dstream.workbook.create.create_all_xlsx_with_datastream_command
-      dstream_excel.dstream.downloader.populate_all_files_in_folder
-      dstream_excel.dstream.combine.combine_all_datastream_xlsx
+      dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs
+      dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv
 
 
 API Documentation

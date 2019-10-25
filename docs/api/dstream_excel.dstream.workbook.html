@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.dstream.workbook package &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>dstream_excel.dstream.workbook package &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="dstream_excel.tools package" href="dstream_excel.tools.html" />
-    <link rel="prev" title="dstream_excel.dstream package" href="dstream_excel.dstream.html" />
+    <link rel="prev" title="dstream_excel.dstream.keepopen package" href="dstream_excel.dstream.keepopen.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -78,6 +78,12 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
 </dd></dl>
 
 <dl class="exception">
+<dt id="dstream_excel.dstream.workbook.exceptions.DatastreamFunctionShouldBeReRunException">
+<em class="property">exception </em><code class="sig-prename descclassname">dstream_excel.dstream.workbook.exceptions.</code><code class="sig-name descname">DatastreamFunctionShouldBeReRunException</code><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/exceptions.html#DatastreamFunctionShouldBeReRunException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.exceptions.DatastreamFunctionShouldBeReRunException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
 <dt id="dstream_excel.dstream.workbook.exceptions.WorkbookClosedException">
 <em class="property">exception </em><code class="sig-prename descclassname">dstream_excel.dstream.workbook.exceptions.</code><code class="sig-name descname">WorkbookClosedException</code><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/exceptions.html#WorkbookClosedException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.exceptions.WorkbookClosedException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
@@ -94,13 +100,19 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
 <em class="property">class </em><code class="sig-prename descclassname">dstream_excel.dstream.workbook.functions.</code><code class="sig-name descname">DatastreamExcelFunction</code><span class="sig-paren">(</span><em class="sig-param">symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
+<dt id="dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.static">
-<code class="sig-name descname">static</code><span class="sig-paren">(</span><em class="sig-param">variables</em>, <em class="sig-param">headers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction.static"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.static" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">static</code><span class="sig-paren">(</span><em class="sig-param">variables</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction.static"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.static" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.time_series">
-<code class="sig-name descname">time_series</code><span class="sig-paren">(</span><em class="sig-param">variables</em>, <em class="sig-param">begin='-2Y'</em>, <em class="sig-param">end=''</em>, <em class="sig-param">freq='D'</em>, <em class="sig-param">headers=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction.time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.time_series" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_series</code><span class="sig-paren">(</span><em class="sig-param">variables</em>, <em class="sig-param">begin='-2Y'</em>, <em class="sig-param">end=''</em>, <em class="sig-param">freq='D'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/workbook/functions.html#DatastreamExcelFunction.time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.workbook.functions.DatastreamExcelFunction.time_series" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -140,6 +152,7 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
 <li class="toctree-l3 current"><a class="reference internal" href="dstream_excel.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4 current"><a class="reference internal" href="dstream_excel.dstream.html">dstream_excel.dstream package</a><ul class="current">
 <li class="toctree-l5 current"><a class="reference internal" href="dstream_excel.dstream.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="dstream_excel.dstream.keepopen.html">dstream_excel.dstream.keepopen package</a></li>
 <li class="toctree-l6 current"><a class="current reference internal" href="#">dstream_excel.dstream.workbook package</a><ul>
 <li class="toctree-l7"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.workbook.create">dstream_excel.dstream.workbook.create module</a></li>
@@ -179,7 +192,7 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
   <li><a href="modules.html">dstream_excel</a><ul>
   <li><a href="dstream_excel.html">dstream_excel package</a><ul>
   <li><a href="dstream_excel.dstream.html">dstream_excel.dstream package</a><ul>
-      <li>Previous: <a href="dstream_excel.dstream.html" title="previous chapter">dstream_excel.dstream package</a></li>
+      <li>Previous: <a href="dstream_excel.dstream.keepopen.html" title="previous chapter">dstream_excel.dstream.keepopen package</a></li>
       <li>Next: <a href="dstream_excel.tools.html" title="next chapter">dstream_excel.tools package</a></li>
   </ul></li>
   </ul></li>
@@ -205,7 +218,7 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

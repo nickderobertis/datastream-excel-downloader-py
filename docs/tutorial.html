@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Getting started with dstream_excel &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>Getting started with dstream_excel &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -56,21 +56,23 @@ close Excel and begin using <code class="code docutils literal notranslate"><spa
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This package downloads the data in three main steps:</p>
-<p>1. Creates an XLSX workbook for each company containing the Excel function
-for the Eikon Excel plugin to download the Datastream data</p>
-<p>2. Opens each workbook, one by one, allowing the data to populate, then
-closing and saving the workbook.</p>
-<p>3. Reads the data from all the generated workbooks and combines into
-one CSV file.</p>
+<p>This package downloads the data in four main steps:</p>
+<ol class="arabic simple">
+<li><p>Opens a blank Excel workbook</p></li>
+<li><p>Runs the Datastream Excel plugin functions for sets of companies in each call,
+by default 20 firms at a time.</p></li>
+<li><p>After each function, it extracts the data and saves it into a CSV file</p></li>
+<li><p>After all data is collected, it reads the data from all the generated CSV files
+and combines into a single CSV file.</p></li>
+</ol>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>There are four main functions in the package.
+<p>There are three main functions in the package.
 <a class="reference internal" href="api/dstream_excel.html#dstream_excel.main.download_datastream" title="dstream_excel.main.download_datastream"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream()</span></code></a> is the main function, which
-is just a wrapper to call the other three main functions which complete
-the three steps described above: <a class="reference internal" href="api/dstream_excel.dstream.workbook.html#dstream_excel.dstream.workbook.create.create_all_xlsx_with_datastream_command" title="dstream_excel.dstream.workbook.create.create_all_xlsx_with_datastream_command"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_all_xlsx_with_datastream_command()</span></code></a>,
-<a class="reference internal" href="api/dstream_excel.dstream.html#dstream_excel.dstream.downloader.populate_all_files_in_folder" title="dstream_excel.dstream.downloader.populate_all_files_in_folder"><code class="xref py py-func docutils literal notranslate"><span class="pre">populate_all_files_in_folder()</span></code></a>, and <a class="reference internal" href="api/dstream_excel.dstream.html#dstream_excel.dstream.combine.combine_all_datastream_xlsx" title="dstream_excel.dstream.combine.combine_all_datastream_xlsx"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_xlsx()</span></code></a>.</p>
+is just a wrapper to call the other two main functions which complete
+the four steps described above: <a class="reference internal" href="api/dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs" title="dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream_save_to_csvs()</span></code></a>
+and <a class="reference internal" href="api/dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv" title="dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_csv()</span></code></a>.</p>
 <p>This is a simple example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="n">download_datastream</span>
 
@@ -84,42 +86,106 @@ the three steps described above: <a class="reference internal" href="api/dstream
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>You may see errors relating to calling Excel and that Excel has been terminated.
-There is retry logic built into the package as Excel does not respond very
-consistently in this way, so Excel may be terminated and restarted many
-times in the process of downloading.</p>
-<p>A <cite>failed</cite> folder will be created and any XLSX that were unable
-to pull data after several retries will be moved here so that they can be
-re-run later.</p>
+</div>
+<div class="section" id="how-fast-is-it">
+<h2>How Fast is it?<a class="headerlink" href="#how-fast-is-it" title="Permalink to this headline">¶</a></h2>
+<p>This is actually the second approach I have taken in this library to downloading the
+data. This newer approach is 5-10x as fast as the old one. It allows downloading
+thousands of firms’ data overnight.</p>
+<p>It is possible to squeeze a bit more speed by increasing <cite>num_symbols_per_call</cite>,
+which is how many firms are being downloaded in one Excel function call. The
+default is 20, but you may try increasing it, especially if you are not downloading
+many <cite>variables</cite>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="n">download_datastream</span>
+
+<span class="n">download_datastream</span><span class="p">(</span>
+    <span class="s1">&#39;output_folder&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">&#39;@AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;@MSFT&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span> <span class="s1">&#39;NOSH&#39;</span><span class="p">,</span> <span class="s1">&#39;VO&#39;</span><span class="p">],</span>
+    <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+    <span class="n">begin</span><span class="o">=</span><span class="s1">&#39;-1Y&#39;</span><span class="p">,</span>
+    <span class="n">num_symbols_per_call</span><span class="o">=</span><span class="mi">40</span>  <span class="c1"># can keep going higher until it gets unstable</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Once you increase this too much, the Excel function calls will start failing.</p>
 </div>
 <div class="section" id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="failure-during-download">
+<h3>Failure during Download<a class="headerlink" href="#failure-during-download" title="Permalink to this headline">¶</a></h3>
 <p>Hopefully the <a class="reference internal" href="api/dstream_excel.html#dstream_excel.main.download_datastream" title="dstream_excel.main.download_datastream"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream()</span></code></a> function works end-to-end. But
-the second step where the files populated may cause Excel to fail. There is
-some logic in the package to keep restarting Excel, but this may eventually
-fail as well. If this happens, get your Excel working manually again (may
+the steps 2 and 3 where the data is downloaded may fail. If this happens, get your
+Excel working manually again (may
 require a restart or re-enabling the Eikon plugin), then you can run
-<a class="reference internal" href="api/dstream_excel.dstream.html#dstream_excel.dstream.downloader.populate_all_files_in_folder" title="dstream_excel.dstream.downloader.populate_all_files_in_folder"><code class="xref py py-func docutils literal notranslate"><span class="pre">populate_all_files_in_folder()</span></code></a> while passing <cite>restart=False</cite> to
-continue where it left off. Repeat this as many times as needed, then at
-the end you can run <a class="reference internal" href="api/dstream_excel.dstream.html#dstream_excel.dstream.combine.combine_all_datastream_xlsx" title="dstream_excel.dstream.combine.combine_all_datastream_xlsx"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_xlsx()</span></code></a>.</p>
+<a class="reference internal" href="api/dstream_excel.html#dstream_excel.main.download_datastream" title="dstream_excel.main.download_datastream"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream()</span></code></a> with <cite>restart=False</cite> to
+continue where it left off. <cite>restart=False</cite> is the default so you don’t actually
+need to pass it, but make sure that if you used <cite>restart=True</cite> before that you
+have removed it. All the other options should be the same as your
+original call to the function.</p>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">populate_all_files_in_folder</span><span class="p">,</span>
-    <span class="n">combine_all_datastream_xlsx</span>
-<span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="n">download_datastream</span>
 
-<span class="c1"># Run as many times as needed, fixing Excel in between</span>
-<span class="n">populate_all_files_in_folder</span><span class="p">(</span>
+<span class="n">download_datastream</span><span class="p">(</span>
     <span class="s1">&#39;output_folder&#39;</span><span class="p">,</span>
+    <span class="p">[</span><span class="s1">&#39;@AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;@MSFT&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span> <span class="s1">&#39;NOSH&#39;</span><span class="p">,</span> <span class="s1">&#39;VO&#39;</span><span class="p">],</span>
+    <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+    <span class="n">begin</span><span class="o">=</span><span class="s1">&#39;-1Y&#39;</span><span class="p">,</span>
+
+    <span class="c1"># optional, but don&#39;t set it to True if you want it to pick up where it left off!</span>
     <span class="n">restart</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="it-s-failing-a-lot">
+<h4>It’s Failing a Lot<a class="headerlink" href="#it-s-failing-a-lot" title="Permalink to this headline">¶</a></h4>
+<p>The stability of the apporoach depends on how much data is being downloaded in each
+function call. This depends both on <cite>num_symbols_per_call</cite> and the number of
+<cite>variables</cite> being downloaded. I have set the default <cite>num_symbols_per_call</cite> to be
+reasonable for up to 10-20 <cite>variables</cite>. If you are downloading more, you may need
+to decrease <cite>num_symbols_per_call</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="n">download_datastream</span>
 
-<span class="c1"># Once populate can actually finish, then run this</span>
-<span class="n">combine_all_datastream_xlsx</span><span class="p">(</span>
+<span class="n">download_datastream</span><span class="p">(</span>
     <span class="s1">&#39;output_folder&#39;</span><span class="p">,</span>
-    <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span>
+    <span class="p">[</span><span class="s1">&#39;@AAPL&#39;</span><span class="p">,</span><span class="s1">&#39;@MSFT&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span> <span class="s1">&#39;NOSH&#39;</span><span class="p">,</span> <span class="s1">&#39;VO&#39;</span><span class="p">],</span>
+    <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+    <span class="n">begin</span><span class="o">=</span><span class="s1">&#39;-1Y&#39;</span><span class="p">,</span>
+    <span class="n">num_symbols_per_call</span><span class="o">=</span><span class="mi">10</span>  <span class="c1"># keep setting lower if you are running into lots of crashing</span>
 <span class="p">)</span>
 </pre></div>
+</div>
+<p>I have planned for a future version to automatically set a good default
+<cite>num_symbols_per_call</cite> based on the number of variables being passed, but for
+now it is 20 by default for any number of variables.</p>
+</div>
+</div>
+<div class="section" id="failure-during-combining">
+<h3>Failure during Combining<a class="headerlink" href="#failure-during-combining" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it may happen that the data download finishes fine, but it fails during
+the combining CSV step. So you are left with a lot of CSV files, not one single
+file to work with. If this happens, you can manually run the
+<a class="reference internal" href="api/dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv" title="dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_csv()</span></code></a> function which is usually called as part of
+<a class="reference internal" href="api/dstream_excel.html#dstream_excel.main.download_datastream" title="dstream_excel.main.download_datastream"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream()</span></code></a>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dstream_excel</span> <span class="k">import</span> <span class="n">combine_all_datastream_csv</span>
+
+<span class="n">combine_all_datastream_csv</span><span class="p">(</span><span class="s1">&#39;output_folder&#39;</span><span class="p">,</span> <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that calling it this way, it will attempt to resume from where it left off.
+If for some reason this still doesn’t work, you can also try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">combine_all_datastream_csv</span><span class="p">(</span><span class="s1">&#39;output_folder&#39;</span><span class="p">,</span> <span class="n">outpath</span><span class="o">=</span><span class="s1">&#39;data.csv&#39;</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <cite>restart=True</cite> when used in <a class="reference internal" href="api/dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv" title="dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_csv()</span></code></a> is merely
+talking about the combining process, not the download process. It will not remove
+or overwrite anything you have downloaded. It will just start the combining process
+over from scratch.</p>
 </div>
 </div>
 </div>
@@ -137,7 +203,15 @@ the end you can run <a class="reference internal" href="api/dstream_excel.dstrea
 <li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-fast-is-it">How Fast is it?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#failure-during-download">Failure during Download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#it-s-failing-a-lot">It’s Failing a Lot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#failure-during-combining">Failure during Combining</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -171,7 +245,7 @@ the end you can run <a class="reference internal" href="api/dstream_excel.dstrea
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

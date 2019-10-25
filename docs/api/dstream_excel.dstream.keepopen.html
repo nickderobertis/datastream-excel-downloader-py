@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dstream_excel.dstream.keepopen package &#8212; dstream_excel 0.4.4 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dstream_excel.dstream.workbook package" href="dstream_excel.dstream.workbook.html" />
+    <link rel="prev" title="dstream_excel.dstream package" href="dstream_excel.dstream.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="dstream-excel-dstream-keepopen-package">
+<h1>dstream_excel.dstream.keepopen package<a class="headerlink" href="#dstream-excel-dstream-keepopen-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen.combine">
+<span id="dstream-excel-dstream-keepopen-combine-module"></span><h2>dstream_excel.dstream.keepopen.combine module<a class="headerlink" href="#module-dstream_excel.dstream.keepopen.combine" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.combine.</code><code class="sig-name descname">combine_all_datastream_csv</code><span class="sig-paren">(</span><em class="sig-param">infolder</em>, <em class="sig-param">outpath='all_data.csv'</em>, <em class="sig-param">restart=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/combine.html#combine_all_datastream_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine populated data in csv files into single csv file. This is normally run as a part of
+<a class="reference internal" href="dstream_excel.html#dstream_excel.main.download_datastream" title="dstream_excel.main.download_datastream"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream()</span></code></a>, but if for some reason your CSV files don’t get combined at the end,
+or you want to combine them to see a test sample while the download is still running,
+then you can run this manually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infolder</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Folder containing populated csv files</p></li>
+<li><p><strong>outpath</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Full file path to output csv to</p></li>
+<li><p><strong>restart</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to force a restart of combining files. If the process is stopped, it will be continued
+where it left off if restart=False, and start from the beginning if restart=True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen.download">
+<span id="dstream-excel-dstream-keepopen-download-module"></span><h2>dstream_excel.dstream.keepopen.download module<a class="headerlink" href="#module-dstream_excel.dstream.keepopen.download" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.download.</code><code class="sig-name descname">download_datastream_save_to_csvs</code><span class="sig-paren">(</span><em class="sig-param">symbols</em>, <em class="sig-param">variables</em>, <em class="sig-param">out_folder='inprogress'</em>, <em class="sig-param">num_symbols_per_call=50</em>, <em class="sig-param">restart=False</em>, <em class="sig-param">**ds_func_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/download.html#download_datastream_save_to_csvs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a workbook if necessary, then repeatedly switches out Datastream function, saves the values in
+a csv, then goes to next Datastream function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Datastream symbols representing companies. Available by selecting a list through filters
+in Eikon, then getting an output of that list.</p></li>
+<li><p><strong>variables</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Time-series variables to download</p></li>
+<li><p><strong>out_folder</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Folder in which in process XLSX files will be generated</p></li>
+<li><p><strong>num_symbols_per_call</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of firms to gather in one pull. Setting this higher should speed up data
+collection, but may also make it less stable. If many variables and a longer history is being pulled,
+a smaller number may be necessary.</p></li>
+<li><p><strong>restart</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to force a restart of download. If the process is stopped, it will be continued
+where it left off if restart=False, and start from the beginning if restart=True.</p></li>
+<li><p><strong>ds_func_kwargs</strong> – can pass begin, end, or freq. All of these arguments take day, month, and year as
+D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
+a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up to current.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen.excel">
+<span id="dstream-excel-dstream-keepopen-excel-module"></span><h2>dstream_excel.dstream.keepopen.excel module<a class="headerlink" href="#module-dstream_excel.dstream.keepopen.excel" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.excel.get_empty_ws">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.excel.</code><code class="sig-name descname">get_empty_ws</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/excel.html#get_empty_ws"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.excel.get_empty_ws" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen.extract">
+<span id="dstream-excel-dstream-keepopen-extract-module"></span><h2>dstream_excel.dstream.keepopen.extract module<a class="headerlink" href="#module-dstream_excel.dstream.keepopen.extract" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.extract.firm_dfs_from_multi_firm_df">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.extract.</code><code class="sig-name descname">firm_dfs_from_multi_firm_df</code><span class="sig-paren">(</span><em class="sig-param">multi_firm_df</em>, <em class="sig-param">symbols</em>, <em class="sig-param">num_variables</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/extract.html#firm_dfs_from_multi_firm_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.extract.firm_dfs_from_multi_firm_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.extract.get_multi_firm_df_from_sheet">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.extract.</code><code class="sig-name descname">get_multi_firm_df_from_sheet</code><span class="sig-paren">(</span><em class="sig-param">ws</em>, <em class="sig-param">table_start_range='A1'</em>, <em class="sig-param">retries=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/extract.html#get_multi_firm_df_from_sheet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.extract.get_multi_firm_df_from_sheet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.extract.long_firm_df_from_ds_multi_firm_df">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.extract.</code><code class="sig-name descname">long_firm_df_from_ds_multi_firm_df</code><span class="sig-paren">(</span><em class="sig-param">multi_firm_df</em>, <em class="sig-param">symbols</em>, <em class="sig-param">num_variables</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/extract.html#long_firm_df_from_ds_multi_firm_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.extract.long_firm_df_from_ds_multi_firm_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen.wait">
+<span id="dstream-excel-dstream-keepopen-wait-module"></span><h2>dstream_excel.dstream.keepopen.wait module<a class="headerlink" href="#module-dstream_excel.dstream.keepopen.wait" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dstream_excel.dstream.keepopen.wait.wait_for_datastream_result">
+<code class="sig-prename descclassname">dstream_excel.dstream.keepopen.wait.</code><code class="sig-name descname">wait_for_datastream_result</code><span class="sig-paren">(</span><em class="sig-param">ws</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/dstream/keepopen/wait.html#wait_for_datastream_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.dstream.keepopen.wait.wait_for_datastream_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dstream_excel.dstream.keepopen">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dstream_excel.dstream.keepopen" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started with dstream_excel</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">dstream_excel</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="dstream_excel.html">dstream_excel package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="dstream_excel.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="dstream_excel.dstream.html">dstream_excel.dstream package</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="dstream_excel.dstream.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">dstream_excel.dstream.keepopen package</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen.combine">dstream_excel.dstream.keepopen.combine module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen.download">dstream_excel.dstream.keepopen.download module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen.excel">dstream_excel.dstream.keepopen.excel module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen.extract">dstream_excel.dstream.keepopen.extract module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen.wait">dstream_excel.dstream.keepopen.wait module</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#module-dstream_excel.dstream.keepopen">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="dstream_excel.dstream.workbook.html">dstream_excel.dstream.workbook package</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="dstream_excel.dstream.html#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dstream_excel.dstream.html#module-dstream_excel.dstream.combine">dstream_excel.dstream.combine module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dstream_excel.dstream.html#module-dstream_excel.dstream.downloader">dstream_excel.dstream.downloader module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="dstream_excel.dstream.html#module-dstream_excel.dstream">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.tools.html">dstream_excel.tools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.tracker.html">dstream_excel.tracker package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dstream_excel.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dstream_excel.html#module-dstream_excel.fileops">dstream_excel.fileops module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dstream_excel.html#module-dstream_excel.main">dstream_excel.main module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dstream_excel.html#module-dstream_excel">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">dstream_excel</a><ul>
+  <li><a href="dstream_excel.html">dstream_excel package</a><ul>
+  <li><a href="dstream_excel.dstream.html">dstream_excel.dstream package</a><ul>
+      <li>Previous: <a href="dstream_excel.dstream.html" title="previous chapter">dstream_excel.dstream package</a></li>
+      <li>Next: <a href="dstream_excel.dstream.workbook.html" title="next chapter">dstream_excel.dstream.workbook package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Nick DeRobertis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/dstream_excel.dstream.keepopen.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

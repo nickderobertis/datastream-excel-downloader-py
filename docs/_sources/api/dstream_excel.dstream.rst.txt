@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+   dstream_excel.dstream.keepopen
    dstream_excel.dstream.workbook
 
 Submodules

@@ -12,7 +12,11 @@ def download_datastream(work_folder: str, symbol_list: Sequence[str], variables:
     Opens a workbook if necessary, then repeatedly switches out Datastream function, saves the values in
     a csv, then goes to next Datastream function. Finally, combines the created csv files into a single csv.
 
-    :param work_folder: Folder in which in process XLSX files will be generated
+    This function is ultimately just a wrapper which calls:
+    :py:func:`.download_datastream_save_to_csvs` to download create many CSV files containing all the data
+    :py:func:`.combine_all_datastream_csv` to combine the many CSV files created in the process into a single CSV
+
+    :param work_folder: Folder in which in process CSV files will be generated
     :param symbol_list: Datastream symbols representing companies. Available by selecting a list through filters
         in Eikon, then getting an output of that list.
     :param variables: Time-series variables to download

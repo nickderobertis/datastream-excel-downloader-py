@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.dstream.combine &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>dstream_excel.dstream.combine &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -39,6 +39,7 @@
 
 <span class="kn">from</span> <span class="nn">dstream_excel.tools.ext_pandas</span> <span class="k">import</span> <span class="n">_get_outpath_and_df_of_headers</span><span class="p">,</span> <span class="n">_append_df_to_csv</span>
 <span class="kn">from</span> <span class="nn">dstream_excel.tracker.files</span> <span class="k">import</span> <span class="n">FileProcessTracker</span>
+<span class="kn">from</span> <span class="nn">dstream_excel.dstream.workbook.filename</span> <span class="k">import</span> <span class="n">_original_symbol_from_filename_symbol</span>
 
 
 <div class="viewcode-block" id="combine_all_datastream_xlsx"><a class="viewcode-back" href="../../../api/dstream_excel.dstream.html#dstream_excel.dstream.combine.combine_all_datastream_xlsx">[docs]</a><span class="k">def</span> <span class="nf">combine_all_datastream_xlsx</span><span class="p">(</span><span class="n">infolder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">outpath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;all_data.csv&#39;</span><span class="p">,</span> <span class="n">restart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
@@ -118,7 +119,9 @@
 <span class="k">def</span> <span class="nf">_datastream_filepath_to_iq_id</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="c1">#strips folders, etc.</span>
     <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;([\S\s]*)([.]xlsx)&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ds_filename_id</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ds_id</span> <span class="o">=</span> <span class="n">_original_symbol_from_filename_symbol</span><span class="p">(</span><span class="n">ds_filename_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds_id</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
@@ -177,7 +180,7 @@
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -1,0 +1,54 @@
+dstream\_excel.dstream.keepopen package
+=======================================
+
+Submodules
+----------
+
+dstream\_excel.dstream.keepopen.combine module
+----------------------------------------------
+
+.. automodule:: dstream_excel.dstream.keepopen.combine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.dstream.keepopen.download module
+-----------------------------------------------
+
+.. automodule:: dstream_excel.dstream.keepopen.download
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.dstream.keepopen.excel module
+--------------------------------------------
+
+.. automodule:: dstream_excel.dstream.keepopen.excel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.dstream.keepopen.extract module
+----------------------------------------------
+
+.. automodule:: dstream_excel.dstream.keepopen.extract
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dstream\_excel.dstream.keepopen.wait module
+-------------------------------------------
+
+.. automodule:: dstream_excel.dstream.keepopen.wait
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: dstream_excel.dstream.keepopen
+   :members:
+   :undoc-members:
+   :show-inheritance:

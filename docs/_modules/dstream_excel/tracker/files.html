@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel.tracker.files &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>dstream_excel.tracker.files &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -40,7 +40,7 @@
 
 <div class="viewcode-block" id="FileProcessTracker"><a class="viewcode-back" href="../../../api/dstream_excel.tracker.html#dstream_excel.tracker.files.FileProcessTracker">[docs]</a><span class="k">class</span> <span class="nc">FileProcessTracker</span><span class="p">:</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;csv&#39;</span><span class="p">,)):</span>
+<div class="viewcode-block" id="FileProcessTracker.__init__"><a class="viewcode-back" href="../../../api/dstream_excel.tracker.html#dstream_excel.tracker.files.FileProcessTracker.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file_types</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;csv&#39;</span><span class="p">,)):</span>
 
         <span class="k">if</span> <span class="n">folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
@@ -54,7 +54,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">restart</span> <span class="o">=</span> <span class="n">restart</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">load_completed_files</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_process_files</span><span class="p">(</span><span class="n">file_types</span><span class="o">=</span><span class="n">file_types</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_process_files</span><span class="p">(</span><span class="n">file_types</span><span class="o">=</span><span class="n">file_types</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FileProcessTracker.file_generator"><a class="viewcode-back" href="../../../api/dstream_excel.tracker.html#dstream_excel.tracker.files.FileProcessTracker.file_generator">[docs]</a>    <span class="k">def</span> <span class="nf">file_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">timer</span> <span class="o">=</span> <span class="n">TimeTracker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folder</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">restart</span><span class="p">)</span>
@@ -158,7 +158,7 @@
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

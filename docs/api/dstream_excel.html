@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dstream_excel package &#8212; dstream_excel 0.3.0 documentation</title>
+    <title>dstream_excel package &#8212; dstream_excel 0.4.4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,6 +40,16 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="dstream_excel.dstream.html">dstream_excel.dstream package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dstream_excel.dstream.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dstream_excel.dstream.keepopen.html">dstream_excel.dstream.keepopen package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen.combine">dstream_excel.dstream.keepopen.combine module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen.download">dstream_excel.dstream.keepopen.download module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen.excel">dstream_excel.dstream.keepopen.excel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen.extract">dstream_excel.dstream.keepopen.extract module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen.wait">dstream_excel.dstream.keepopen.wait module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.keepopen.html#module-dstream_excel.dstream.keepopen">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="dstream_excel.dstream.workbook.html">dstream_excel.dstream.workbook package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.workbook.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dstream_excel.dstream.workbook.html#module-dstream_excel.dstream.workbook.create">dstream_excel.dstream.workbook.create module</a></li>
@@ -100,18 +110,26 @@
 <span id="dstream-excel-main-module"></span><h2>dstream_excel.main module<a class="headerlink" href="#module-dstream_excel.main" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="dstream_excel.main.download_datastream">
-<code class="sig-prename descclassname">dstream_excel.main.</code><code class="sig-name descname">download_datastream</code><span class="sig-paren">(</span><em class="sig-param">work_folder</em>, <em class="sig-param">symbol_list</em>, <em class="sig-param">variables</em>, <em class="sig-param">outpath='data.csv'</em>, <em class="sig-param">**dstream_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/main.html#download_datastream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.main.download_datastream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dstream_excel.main.</code><code class="sig-name descname">download_datastream</code><span class="sig-paren">(</span><em class="sig-param">work_folder</em>, <em class="sig-param">symbol_list</em>, <em class="sig-param">variables</em>, <em class="sig-param">num_symbols_per_call=20</em>, <em class="sig-param">outpath='data.csv'</em>, <em class="sig-param">restart=False</em>, <em class="sig-param">**dstream_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dstream_excel/main.html#download_datastream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dstream_excel.main.download_datastream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for full workflow to download data from Datastream.</p>
-<p>Creates XLSX files with Datastream functions, opens those workbooks to populate the data, then
-combines the XLSX files into a single CSV.</p>
+<p>Opens a workbook if necessary, then repeatedly switches out Datastream function, saves the values in
+a csv, then goes to next Datastream function. Finally, combines the created csv files into a single csv.</p>
+<p>This function is ultimately just a wrapper which calls:
+<a class="reference internal" href="dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs" title="dstream_excel.dstream.keepopen.download.download_datastream_save_to_csvs"><code class="xref py py-func docutils literal notranslate"><span class="pre">download_datastream_save_to_csvs()</span></code></a> to download create many CSV files containing all the data
+<a class="reference internal" href="dstream_excel.dstream.keepopen.html#dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv" title="dstream_excel.dstream.keepopen.combine.combine_all_datastream_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_all_datastream_csv()</span></code></a> to combine the many CSV files created in the process into a single CSV</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>work_folder</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Folder in which in process XLSX files will be generated</p></li>
+<li><p><strong>work_folder</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Folder in which in process CSV files will be generated</p></li>
 <li><p><strong>symbol_list</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Datastream symbols representing companies. Available by selecting a list through filters
 in Eikon, then getting an output of that list.</p></li>
 <li><p><strong>variables</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Time-series variables to download</p></li>
+<li><p><strong>num_symbols_per_call</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Number of firms to gather in one pull. Setting this higher should speed up data
+collection, but may also make it less stable. If many variables and a longer history is being pulled,
+a smaller number may be necessary.</p></li>
 <li><p><strong>outpath</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Full file path to output csv to</p></li>
+<li><p><strong>restart</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to force a restart of download. If the process is stopped, it will be continued
+where it left off if restart=False, and start from the beginning if restart=True.</p></li>
 <li><p><strong>dstream_kwargs</strong> – can pass begin, end, or freq. All of these arguments take day, month, and year as
 D, M, and Y. freq can be set to D, M, or Y. begin and end can be set to just Y but combined with
 a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up to current.</p></li>
@@ -126,6 +144,8 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
 </div>
 <div class="section" id="module-dstream_excel">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dstream_excel" title="Permalink to this headline">¶</a></h2>
+<p>Use this tool to drive Excel using the Thompson Reuters Eikon plugin to download Datastream data. Useful
+for downloading large amounts of data.</p>
 </div>
 </div>
 
@@ -187,7 +207,7 @@ a time modifier, e.g. begin=’-5Y’. Don’t pass end to have the data go up t
       &copy;2019, Nick DeRobertis.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
