@@ -112,7 +112,7 @@ def _replace(src, dst):
             time.sleep(.1)
             retries += 1
             if retries > 100:
-                print(f'Retried removing {filepath} over 10s but still failed.')
+                print(f'Retried replacing {dst} with {src} over 10s but still failed.')
                 raise e
 
 
