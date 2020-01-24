@@ -14,7 +14,7 @@ PACKAGE_SHORT_DESCRIPTION = 'Automate data collection from Thompson Reuters Data
 # Long description of the package
 PACKAGE_DESCRIPTION = """
 Use this tool to drive Excel using the Thompson Reuters Eikon plugin to download Datastream data.
-See more at the repo page: https://github.com/whoopnip/datastream-excel-downloader-py
+See more at the repo page: https://github.com/nickderobertis/datastream-excel-downloader-py
 """
 
 # Author
@@ -73,6 +73,6 @@ DOCS_OTHER_MOCK_IMPORTS = [
 ]
 
 PACKAGE_URLS = {
-    'Code': 'https://github.com/whoopnip/datastream-excel-downloader-py',
-    'Documentation': 'https://whoopnip.github.io/datastream-excel-downloader-py/'
+    'Code': 'https://github.com/nickderobertis/datastream-excel-downloader-py',
+    'Documentation': 'https://nickderobertis.github.io/datastream-excel-downloader-py/'
 }
